@@ -43,6 +43,9 @@ const Home = ({
         <section>
           {/* Row */}
           <Row title="Trending Now" movies={trendingNow}/>
+          <Row title="Romance" movies={romanceMovies} />
+          <Row title="Documentary" movies={documentaries} />
+          <Row title='Top Rated' movies={topRated} />
         </section>
       </main>
       {/* Modal */}
