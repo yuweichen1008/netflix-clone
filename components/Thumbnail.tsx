@@ -4,6 +4,7 @@ import { Movie } from '../typings'
 
 interface Props {
     movie: Movie
+    // Firebase : DocumentData
 }
 
 function Thumbnail({ movie }: Props) {

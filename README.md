@@ -1,7 +1,7 @@
 
 # Netflix Clone 
 
-[[https://github.com/yuweichen1008/netflix-clone/blob/master/img/homepage.PNG|alt=octocat]]
+[[https://github.com/yuweichen1008/netflix-clone/blob/main/img/homepage.PNG|alt=octocat]]
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
 
