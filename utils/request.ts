@@ -1,6 +1,6 @@
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY
 const BASE_URL = 'https://api.themoviedb.org/3'
-// https://api.themoviedb.org/3/discover/movie?api_key=5cf150b216f47c80149ee7c251528a5e&with_networks=213
+
 const requests = {
   fetchTrending: `${BASE_URL}/trending/all/week?api_key=${API_KEY}&language=en-US`,
   fetchNetflixOriginals: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_networks=213`,
