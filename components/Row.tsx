@@ -11,17 +11,17 @@ function Row({ title, movies }: Props) {
   const rowRef = useRef<HTMLDivElement>(null)
   const [isMove, setIsMove] = useState(false)
 
-  const handleClick = (direction : string) => {
+  const handleClick = (direction: string) => {
     setIsMove(true)
-    if(rowRef.current){
-      const {scrollLeft, clientWidth} = rowRef.current
+    if (rowRef.current) {
+      const { scrollLeft, clientWidth } = rowRef.current
 
-      const scrollTo = 
+      const scrollTo =
         direction === 'left' ?
-          scrollLeft - clientWidth : 
+          scrollLeft - clientWidth :
           scrollLeft + clientWidth
 
-      rowRef.current.scrollTo({left : scrollTo, behavior: 'smooth'})
+      rowRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' })
     }
   }
 
@@ -36,7 +36,10 @@ function Row({ title, movies }: Props) {
             ${!isMove && 'hidden'}`}
           onClick={() => handleClick('left')}
         />
-        <div ref={rowRef} className='flex items-center space-x-1 overflow-x-scroll scrollbar-hide'>
+        <div
+          ref={rowRef}
+          className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide md:space-x-2.5 md:p-2'
+        >
           {movies.map((movie) =>
             <Thumbnail key={movie.id} movie={movie} />
           )}
