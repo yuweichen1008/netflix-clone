@@ -16,6 +16,7 @@ Add API key for TMDB
 
 ```
 NEXT_PUBLIC_TMDB_API_KEY=
+NEXT_PUBLIC_FIREBASE_API_KEY=
 ```
 
 ## How to use
