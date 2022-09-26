@@ -15,16 +15,16 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     console.log(data)
-    // if (login) {
-    //   // await signIn(email, password)
-    // } else {
-    //   // await signUp(email, password)
-    // }
+    if (login) {
+      // await signIn(email, password)
+    } else {
+      // await signUp(email, password)
+    }
   }
 
 
@@ -76,20 +76,20 @@ function Login() {
           </label>
           <label className="inline-block w-full">
             <input
-              {...register("password"), {
+              {...register("password", {
                 required: true,
                 minLength: 6,
                 maxLength: 50,
-              }}
+              })}
               type="password"
               placeholder="Password"
               className="input"
             />
-            {errors?.password &&
+            {errors?.password && (
               <p className="p-1 font-light text-orange-500">
                 The password must be length between 6 and 50 characters
               </p>
-            }
+            )}
           </label>
         </div>
 
