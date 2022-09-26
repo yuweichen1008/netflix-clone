@@ -12,14 +12,19 @@ function Login() {
 
   const [login, setLogin] = useState(false)
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  // const onSubmit: SubmitHandler<FormData> = data => console.log(data);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>();
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    if (login) {
-      // await signIn(email, password)
-    } else {
-      // await signUp(email, password)
-    }
+    console.log(data)
+    // if (login) {
+    //   // await signIn(email, password)
+    // } else {
+    //   // await signUp(email, password)
+    // }
   }
 
 
