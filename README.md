@@ -4,7 +4,11 @@
 Snapshot
 ![homepage](https://github.com/yuweichen1008/netflix-clone/blob/main/img/homepage.PNG?raw=true)
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+# Feature
+
+1. useAuth hook with React's useContext, createContext
+2. recoil atoms to show modal, styling with Material UI
+
 
 ## Deploy your own
 

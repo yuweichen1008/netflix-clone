@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { baseUrl } from '../constants/movie'
 import { Movie } from '../typings'
+import { useRecoilState } from 'recoil'
+import { modalState, movieState } from '../atoms/modalAtom'
 
 interface Props {
     netflixOriginals: Movie[]
 }
 function Banner({ netflixOriginals }: Props) {
     const [movie, setMovie] = useState<Movie | null>(null)
+    const [showModal, setShowModal] = useRecoilState(modalState)
+    const [currentMovie, setCurrentMovie] = useRecoilState(movieState)
+
 
     useEffect(() => {
         setMovie(netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)])
@@ -33,7 +38,15 @@ function Banner({ netflixOriginals }: Props) {
             </p>
             <div className='flex space-x-3'>
                 <button className='bannerButton bg-black text-white'>Play</button>
-                <button className='bannerButton bg-[red]/60'>More info</button>
+                <button 
+                    className='bannerButton bg-[red]/60'
+                    onClick={() =>{
+                        setCurrentMovie(movie)
+                        setShowModal(true)
+                    }}
+                    >
+                        More info
+                        </button>
             </div>
         </div>
     )
