@@ -7,7 +7,7 @@ Snapshot
 # Feature
 
 1. useAuth hook with React's useContext, createContext
-2. recoil atoms to show modal, styling with Material UI
+2. recoil atoms to show modal, styling with Material UI, react-player is used to show video
 
 
 ## Deploy your own
