@@ -13,13 +13,12 @@ function Banner({ netflixOriginals }: Props) {
     const [showModal, setShowModal] = useRecoilState(modalState)
     const [currentMovie, setCurrentMovie] = useRecoilState(movieState)
 
-
     useEffect(() => {
         setMovie(netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)])
 
     }, [netflixOriginals])
 
-    console.log(movie)
+    // console.log(movie)
     return (
         <div className='flex flex-col space-y-2 py-16 md:space-y-4 lg:h-[65vh]  lg:justify-end'>
             <div className='absolute top-0 left-0 -z-10 h-[95vh] w-screen'>
@@ -38,15 +37,15 @@ function Banner({ netflixOriginals }: Props) {
             </p>
             <div className='flex space-x-3'>
                 <button className='bannerButton bg-black text-white'>Play</button>
-                <button 
+                <button
                     className='bannerButton bg-[red]/60'
-                    onClick={() =>{
+                    onClick={() => {
                         setCurrentMovie(movie)
                         setShowModal(true)
                     }}
-                    >
-                        More info
-                        </button>
+                >
+                    More info
+                </button>
             </div>
         </div>
     )
