@@ -12,7 +12,7 @@ interface FormData {
 function Login() {
 
   const [login, setLogin] = useState(false)
-  const { signIn, signUp } = useAuth()
+  const { signIn, signUp, error } = useAuth()
 
   const {
     register,
@@ -93,6 +93,10 @@ function Login() {
             )}
           </label>
         </div>
+
+        {error && (
+          <p className="p-1 font-light text-orange-500">{error}</p>
+        )}
 
         <button
           className="w-full rounded bg-red-600 py-3 font-semibold"

@@ -32,63 +32,57 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [initialLoading, setInitialLoading] = useState(true)
   const router = useRouter()
 
-  useEffect(
-    () => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          const uid = user.uid;
-          setUser(user)
-          setLoading(false)
-        } else {
-          // User is signed out
-          setUser(null)
-          setLoading(false)
-          router.push('/login')
-        }
-
-        setInitialLoading(false)
-      })
-    }, [auth])
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user)
+        setLoading(false)
+      } else {
+        setUser(null)
+        setLoading(false)
+        router.push('/login')
+      }
+      setInitialLoading(false)
+    })
+    return unsubscribe
+  }, [])
 
   const signUp = async (email: string, password: string) => {
     setLoading(true)
+    setError(null)
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
         router.push("/")
-        setLoading(false)
       })
-      .catch((error) => alert(error.message))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
 
   const signIn = async (email: string, password: string) => {
     setLoading(true)
+    setError(null)
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
         router.push("/")
-        setLoading(false)
       })
-      .catch((error) => alert(error.message))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
 
   const logout = async () => {
     setLoading(true)
-
-    signOut(auth).then(() => {
-      setUser(null)
-    })
-      .catch((error) => alert(error.message))
+    setError(null)
+    signOut(auth)
+      .then(() => setUser(null))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
 
   const memoUser = useMemo(() => ({
     user, loading, error, signUp, signIn, logout
-  }), [user, loading])
+  }), [user, loading, error])
 
   return (
     <AuthContext.Provider

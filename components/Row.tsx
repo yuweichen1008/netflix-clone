@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Movie } from '../typings'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import Thumbnail from './Thumbnail'
@@ -9,10 +9,8 @@ interface Props {
 }
 function Row({ title, movies }: Props) {
   const rowRef = useRef<HTMLDivElement>(null)
-  const [isMove, setIsMove] = useState(false)
 
   const handleClick = (direction: string) => {
-    setIsMove(true)
     if (rowRef.current) {
       const { scrollLeft, clientWidth } = rowRef.current
 
@@ -32,8 +30,7 @@ function Row({ title, movies }: Props) {
       </h2>
       <div className='group relative md:-ml-2'>
         <ChevronLeftIcon
-          className={`absolute top-0 bottom-0 left-2 z-40 h-9 w-9 m-auto cursor-pointer opacity-10 transition hover:scale-125 group-hover:opacity-100
-            ${!isMove && 'hidden'}`}
+          className='absolute top-0 bottom-0 left-2 z-40 h-9 w-9 m-auto cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100'
           onClick={() => handleClick('left')}
         />
         <div

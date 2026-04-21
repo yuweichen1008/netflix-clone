@@ -17,23 +17,26 @@ function Modal() {
   useEffect(() => {
     if (!movie) return
     async function fetchMovie() {
-      const data = await fetch(
-        `https://api.themoviedb.org/3/${movie?.media_type === 'tv' ? 'tv' : 'movie'
-        }/${movie?.id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY
-        }&language=en-US&append_to_response=videos`
-      ).then((response) => response.json())
-      if (data?.videos) {
-        const index = data.videos.results.findIndex(
-          (element: Element) => element.type === 'Trailer'
-        )
-        setTrailer(data.videos?.results[index]?.key)
-      }
-      if (data?.genres) {
-        setGenres(data.genres)
+      try {
+        const data = await fetch(
+          `https://api.themoviedb.org/3/${movie?.media_type === 'tv' ? 'tv' : 'movie'
+          }/${movie?.id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY
+          }&language=en-US&append_to_response=videos`
+        ).then((response) => response.json())
+        if (data?.videos) {
+          const index = data.videos.results.findIndex(
+            (element: Element) => element.type === 'Trailer'
+          )
+          setTrailer(data.videos?.results[index]?.key ?? '')
+        }
+        if (data?.genres) {
+          setGenres(data.genres)
+        }
+      } catch (err) {
+        console.error('Failed to fetch movie details:', err)
       }
     }
     fetchMovie()
-    console.log(movie);
   }, [movie])
 
   // console.log(trailer)
@@ -55,14 +58,20 @@ function Modal() {
           <XMarkIcon className='h-6 w-6' />
         </button>
         <div className='relative pt-[56%]'>
-          <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${trailer}`}
-            width="100vh"
-            height="100%"
-            style={{ position: 'absolute', top: '0', left: '0' }}
-            playing
-            muted={muted}
-          />
+          {trailer ? (
+            <ReactPlayer
+              url={`https://www.youtube.com/watch?v=${trailer}`}
+              width="100%"
+              height="100%"
+              style={{ position: 'absolute', top: '0', left: '0' }}
+              playing
+              muted={muted}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#181818] text-gray-400">
+              No trailer available
+            </div>
+          )}
           <div className="absolute bottom-10 flex w-full items-center justify-between px-10">
             <div className='flex space-x-2'>
               <button className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
@@ -89,7 +98,7 @@ function Modal() {
           </div>
         </div>
 
-        <div className='roundedb-md'>
+        <div className='rounded-md'>
           <div className='space-y-4'>
             <div className='flex items-center text-sm space-x-2'>
               <p className='text-green-400'>
