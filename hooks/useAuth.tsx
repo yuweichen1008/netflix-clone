@@ -1,10 +1,12 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
 import { useRouter } from "next/router"
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
-import { auth } from "../firebase"
+
+interface AuthUser {
+  email: string
+}
 
 interface IAuth {
-  user: User | null
+  user: AuthUser | null
   signUp: (email: string, password: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
@@ -14,85 +16,88 @@ interface IAuth {
 
 const AuthContext = createContext<IAuth>({
   user: null,
-  signUp: async () => { },
-  signIn: async () => { },
-  logout: async () => { },
+  signUp: async () => {},
+  signIn: async () => {},
+  logout: async () => {},
   error: null,
   loading: false,
 })
 
-interface AuthProviderProps {
-  children: React.ReactNode
-}
+const STORAGE_KEY = 'netflix-user'
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [loading, setLoading] = useState<boolean>(false)
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [user, setUser] = useState<User | null>(null)
   const [initialLoading, setInitialLoading] = useState(true)
   const router = useRouter()
 
+  // Restore session from localStorage on mount
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user)
-        setLoading(false)
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        setUser(JSON.parse(stored))
       } else {
-        setUser(null)
-        setLoading(false)
         router.push('/login')
       }
+    } catch {
+      localStorage.removeItem(STORAGE_KEY)
+      router.push('/login')
+    } finally {
       setInitialLoading(false)
-    })
-    return unsubscribe
+    }
   }, [])
 
   const signUp = async (email: string, password: string) => {
     setLoading(true)
     setError(null)
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user)
-        router.push("/")
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+    try {
+      if (password.length < 6) throw new Error('Password must be at least 6 characters')
+      const newUser = { email }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser))
+      setUser(newUser)
+      router.push('/')
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const signIn = async (email: string, password: string) => {
     setLoading(true)
     setError(null)
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user)
-        router.push("/")
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+    try {
+      if (password.length < 6) throw new Error('Password must be at least 6 characters')
+      const loggedUser = { email }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(loggedUser))
+      setUser(loggedUser)
+      router.push('/')
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const logout = async () => {
-    setLoading(true)
-    setError(null)
-    signOut(auth)
-      .then(() => setUser(null))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+    localStorage.removeItem(STORAGE_KEY)
+    setUser(null)
+    router.push('/login')
   }
 
-  const memoUser = useMemo(() => ({
-    user, loading, error, signUp, signIn, logout
-  }), [user, loading, error])
+  const memoUser = useMemo(
+    () => ({ user, loading, error, signUp, signIn, logout }),
+    [user, loading, error]
+  )
 
   return (
-    <AuthContext.Provider
-      value={memoUser}
-    >
+    <AuthContext.Provider value={memoUser}>
       {!initialLoading && children}
     </AuthContext.Provider>
   )
 }
-
 
 export default function useAuth() {
   return useContext(AuthContext)

@@ -1,6 +1,5 @@
 import { PlayIcon, XMarkIcon, PlusIcon, HandThumbUpIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/solid'
 import MuiModal from '@mui/material/Modal'
-import { DocumentData } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player/lazy'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -9,7 +8,7 @@ import { Genre, Movie, Element } from '../typings'
 
 function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
-  const [movie, setMovie] = useRecoilState<Movie | DocumentData | null>(movieState)
+  const [movie, setMovie] = useRecoilState<Movie | null>(movieState)
   const [trailer, setTrailer] = useState('')
   const [muted, setMuted] = useState(true)
   const [genres, setGenres] = useState<Genre[]>([])
