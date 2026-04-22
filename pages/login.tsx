@@ -37,8 +37,9 @@ function Login() {
       </Head>
       <Image
         src="https://rb.gy/p2hphi"
-        layout="fill"
-        className="-z-10 !hidden sm:!inline opacity-60"
+        fill
+        className="-z-10 !hidden sm:!inline opacity-60 object-cover"
+        alt=""
       />
       <img
         src='https://top10.netflix.com/images/logo.png'
