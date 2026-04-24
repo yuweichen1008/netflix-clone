@@ -36,14 +36,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setUser(JSON.parse(stored))
-      } else {
-        router.push('/login')
-      }
+      if (stored) setUser(JSON.parse(stored))
     } catch {
       localStorage.removeItem(STORAGE_KEY)
-      router.push('/login')
     } finally {
       setInitialLoading(false)
     }
@@ -84,7 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     localStorage.removeItem(STORAGE_KEY)
     setUser(null)
-    router.push('/login')
+    router.push('/')
   }
 
   const memoUser = useMemo(

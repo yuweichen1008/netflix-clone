@@ -18,6 +18,10 @@ const requests = {
   fetchTrendingTV:  `${BASE_URL}/trending/tv/week?api_key=${API_KEY}&language=en-US`,
   fetchTopRatedTV:  `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US`,
   fetchAnime:       `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=16&with_original_language=ja`,
+
+  // Search
+  fetchSearch: (query: string) =>
+    `${BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${encodeURIComponent(query)}`,
 }
 
 export default requests

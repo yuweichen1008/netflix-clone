@@ -24,7 +24,7 @@ function Row({ title, movies }: Props) {
   }
 
   return (
-    <div className='h-40 space-y-0.5'>
+    <div className='h-[300px] space-y-1'>
       <h2 className='cursor-pointer text-[#e5e5e5] transition duration-200 hover:text-white'>
         {title}
       </h2>
@@ -35,7 +35,7 @@ function Row({ title, movies }: Props) {
         />
         <div
           ref={rowRef}
-          className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide md:space-x-2.5 md:p-2'
+          className='flex items-start space-x-2 overflow-x-scroll scrollbar-hide md:space-x-3 md:p-2'
         >
           {movies.map((movie) =>
             <Thumbnail key={movie.id} movie={movie} />

@@ -1,17 +1,22 @@
-import { PlayIcon, XMarkIcon, PlusIcon, HandThumbUpIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/solid'
+import { PlayIcon, XMarkIcon, PlusIcon, HandThumbUpIcon, SpeakerWaveIcon, SpeakerXMarkIcon, CheckIcon } from '@heroicons/react/24/solid'
 import MuiModal from '@mui/material/Modal'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player/lazy'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { modalState, movieState } from '../atoms/modalAtom'
+import useAuth from '../hooks/useAuth'
 import { Genre, Movie, Element } from '../typings'
 
 function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
-  const [movie, setMovie] = useRecoilState<Movie | null>(movieState)
+  const [movie] = useRecoilState<Movie | null>(movieState)
   const [trailer, setTrailer] = useState('')
   const [muted, setMuted] = useState(true)
   const [genres, setGenres] = useState<Genre[]>([])
+  const [added, setAdded] = useState(false)
+  const { user } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     if (!movie) return
@@ -78,8 +83,16 @@ function Modal() {
                 Play
               </button>
 
-              <button className='modalButton'>
-                <PlusIcon />
+              <button
+                className='modalButton'
+                title={user ? 'Add to My List' : 'Sign in to add to My List'}
+                onClick={() => {
+                  if (!user) { router.push('/login'); return }
+                  setAdded(true)
+                  setTimeout(() => setAdded(false), 2000)
+                }}
+              >
+                {added ? <CheckIcon className="h-5 w-5 text-green-400" /> : <PlusIcon className="h-5 w-5" />}
               </button>
 
               <button className='modalButton'>
@@ -101,7 +114,7 @@ function Modal() {
           <div className='space-y-4'>
             <div className='flex items-center text-sm space-x-2'>
               <p className='text-green-400'>
-                {movie?.vote_average * 10} % Match
+                {movie?.vote_average ? (movie.vote_average * 10).toFixed(0) : '—'} % Match
               </p>
               <p className='font-light'>
                 {movie?.release_date || movie?.first_air_date}
